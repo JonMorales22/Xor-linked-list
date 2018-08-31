@@ -17,7 +17,7 @@ XorLinkedList::XorLinkedList() {
     length = 0;
 }
 
-void XorLinkedList::add(int value) {
+void XorLinkedList::push(int value) {
     if(tail==nullptr){
         Node* node = new Node(value, reinterpret_cast<uintptr_t>(tail));
         tail = node;
@@ -26,7 +26,6 @@ void XorLinkedList::add(int value) {
     }
     else if(tail->getNpx()==0){
         uintptr_t addr = reinterpret_cast<uintptr_t>(tail);
-        std::cout << addr << '\n';
         Node* node_ptr = new Node(value, reinterpret_cast<uintptr_t>(tail));
         tail->setNpx(reinterpret_cast<uintptr_t>(node_ptr));
         tail = node_ptr;
@@ -42,11 +41,58 @@ void XorLinkedList::add(int value) {
     }
 }
 
-void XorLinkedList::traverse(int direction) {
-    Node* node_ptr;
-    Node* node_ptr2;
+void XorLinkedList::unshift(int value) {
+    if(head==nullptr) {
+        Node* node_ptr = new Node(value, reinterpret_cast<uintptr_t>(tail));
+        tail = node_ptr;
+        head = node_ptr;
+        length++;
+    }
+    else {
+        Node* node_ptr = new Node(value, reinterpret_cast<uintptr_t>(head));
+        head->setNpx(head->getNpx() ^ reinterpret_cast<uintptr_t>(node_ptr));
+        head = node_ptr;
+    }
+}
+
+void XorLinkedList::add(int value, int index) {
+    Node* node_ptr, *node_ptr2, *temp_ptr;
     
-    if(direction == 0){
+    if(index<0)
+       throw "Index is less than 0!";
+    else if(index==0) {
+        unshift(value);
+        return;
+    }
+    else if(index>length-1){
+        push(value);
+        return;
+    }
+    
+    node_ptr = (Node *) head->getNpx();
+    node_ptr2 = head;
+    
+    int counter = 0;
+    while(node_ptr!=nullptr) {
+        if(counter==index-1) {
+            temp_ptr = new Node(value, reinterpret_cast<uintptr_t>(node_ptr) ^ reinterpret_cast<uintptr_t>(node_ptr2));
+            node_ptr->setNpx(node_ptr->getNpx() ^ reinterpret_cast<uintptr_t>(node_ptr2) ^ reinterpret_cast<uintptr_t>(temp_ptr));
+            node_ptr2->setNpx(node_ptr2->getNpx() ^ reinterpret_cast<uintptr_t>(node_ptr) ^ reinterpret_cast<uintptr_t>(temp_ptr));
+            return;
+        }
+        temp_ptr = node_ptr2;
+        node_ptr2 = node_ptr;
+        node_ptr = (Node*) (node_ptr->getNpx() ^ reinterpret_cast<uintptr_t>(temp_ptr));
+        counter++;
+    }
+}
+
+void XorLinkedList::traverse(int direction) {
+    Node* node_ptr, *node_ptr2;
+    
+    if(length<=0)
+        return;
+    else if(direction == 0){
         node_ptr = (Node *) head->getNpx();
         node_ptr2 = head;
     }
@@ -67,8 +113,7 @@ void XorLinkedList::traverse(int direction) {
 }
 
 void XorLinkedList::traverse(int direction, int index) {
-    Node* node_ptr;
-    Node* node_ptr2;
+    Node* node_ptr, *node_ptr2;
     int counter = 0;
     
     if(direction == 0){
@@ -119,7 +164,6 @@ int XorLinkedList::remove(int index) {
             break;
         }
         
-        std::cout << "data: " << node_ptr2->getData() << "\n";
         temp_ptr = node_ptr2;
         node_ptr2 = node_ptr;
         node_ptr = (Node*) (node_ptr->getNpx() ^ reinterpret_cast<uintptr_t>(temp_ptr));
@@ -132,6 +176,14 @@ int XorLinkedList::remove(int index) {
 }
 
 int XorLinkedList::pop() {
+    if(length<=0){
+        return -1;
+    }
+    else if(length==1){
+        int value = head->getData();
+        delete head;
+        return value;
+    }
     Node* node_ptr, *temp_ptr;
     node_ptr = (Node *) tail->getNpx();
     temp_ptr = tail;
@@ -143,6 +195,14 @@ int XorLinkedList::pop() {
 }
 
 int XorLinkedList::shift() {
+    if(length<=0){
+        return -1;
+    }
+    else if(length==1){
+        int value = head->getData();
+        delete head;
+        return value;
+    }
     Node* node_ptr, *temp_ptr;
     node_ptr = (Node *) head->getNpx();
     temp_ptr = head;

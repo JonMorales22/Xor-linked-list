@@ -10,19 +10,26 @@
 #include "XorLinkedList.h"
 
 
+/*8/31/2018
+ to do:
+    clean up push function
+    add comments
+*/
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
     XorLinkedList* list = new XorLinkedList();
-    list->add(1);
-    list->add(2);
-    list->add(3);
-    list->add(4);
-    list->add(5);
+    list->push(1);
+    list->push(2);
+    list->push(3);
+    list->push(4);
+    list->push(5);
     
-    std::cout << list->remove(0) << std::endl;
     list->traverse(0);
-    //list->traverse(1);
-    //list->traverse(0, 5);
+    list->add(9,0);
+    list->traverse(1);
+    list->traverse(1);
+    list->traverse(0, 5);
     return 0;
 } 

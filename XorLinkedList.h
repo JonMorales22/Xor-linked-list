@@ -15,9 +15,10 @@
 class XorLinkedList {
 public:
     XorLinkedList();
+    //direction = 0 -> traverse forward, direction = 1 -> traverse backward
     void traverse(int direction);
     void traverse(int direction, int index);
-    void add(int value);
+    void push(int value);
     void add(int value, int index);
     void unshift(int value);
     int pop();
@@ -27,9 +28,7 @@ public:
     Node* getHead();
     ~XorLinkedList();
 private:
-    //unsigned long doXor(unsigned long a, unsigned long b);
     int length;
-    void setTail(Node* node_ptr);
     int findShortestDirection();
     Node* tail;
     Node* head;
