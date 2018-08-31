@@ -27,9 +27,16 @@ int main(int argc, const char * argv[]) {
     list->push(5);
     
     list->traverse(0);
+    std::cout << std::endl;
     list->add(9,0);
+    list->traverse(0);
+    std::cout << std::endl;
     list->traverse(1);
-    list->traverse(1);
+    std::cout << std::endl;
     list->traverse(0, 5);
+    std::cout << std::endl;
+    
+    list->remove(0);
+    list->traverse(0);
     return 0;
 } 

@@ -18,19 +18,19 @@ XorLinkedList::XorLinkedList() {
 }
 
 void XorLinkedList::push(int value) {
-    if(tail==nullptr){
+    if(tail==nullptr&&head==nullptr){
         Node* node = new Node(value, reinterpret_cast<uintptr_t>(tail));
         tail = node;
         head = node;
         length++;
     }
-    else if(tail->getNpx()==0){
-        uintptr_t addr = reinterpret_cast<uintptr_t>(tail);
-        Node* node_ptr = new Node(value, reinterpret_cast<uintptr_t>(tail));
-        tail->setNpx(reinterpret_cast<uintptr_t>(node_ptr));
-        tail = node_ptr;
-        length++;
-    }
+//    else if(tail->getNpx()==0){
+//        //uintptr_t addr = reinterpret_cast<uintptr_t>(tail);
+//        Node* node_ptr = new Node(value, reinterpret_cast<uintptr_t>(tail));
+//        tail->setNpx(reinterpret_cast<uintptr_t>(node_ptr));
+//        tail = node_ptr;
+//        length++;
+//    }
     else {
         Node* node_ptr = new Node(value, reinterpret_cast<uintptr_t>(tail));
         unsigned long addr1 = tail->getNpx();
