@@ -15,7 +15,7 @@
 class XorLinkedList {
 public:
     XorLinkedList();
-    //direction = 0 -> traverse forward, direction = 1 -> traverse backward
+    //direction = 0 -> traverse starting from head, direction = 1 => traverse starting from tail
     void traverse(int direction);
     void traverse(int direction, int index);
     void push(int value);
